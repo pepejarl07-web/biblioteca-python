@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Editar libro</h1>
+<form method="post">
+    <div class="mb-3">
+        <label for="titulo" class="form-label">Título</label>
+        <input type="text" class="form-control {% if errors.titulo %}is-invalid{% endif %}" id="titulo" name="titulo" value="{{ libro.titulo or '' }}">
+        {% if errors.titulo %}
+        <div class="invalid-feedback">{{ errors.titulo }}</div>
+        {% endif %}
+    </div>
+    <div class="mb-3">
+        <label for="autor" class="form-label">Autor</label>
+        <input type="text" class="form-control {% if errors.autor %}is-invalid{% endif %}" id="autor" name="autor" value="{{ libro.autor or '' }}">
+        {% if errors.autor %}
+        <div class="invalid-feedback">{{ errors.autor }}</div>
+        {% endif %}
+    </div>
+    <div class="mb-3">
+        <label for="genero" class="form-label">Género</label>
+        <input type="text" class="form-control {% if errors.genero %}is-invalid{% endif %}" id="genero" name="genero" value="{{ libro.genero or '' }}">
+        {% if errors.genero %}
+        <div class="invalid-feedback">{{ errors.genero }}</div>
+        {% endif %}
+    </div>
+    <div class="mb-3">
+        <label for="año" class="form-label">Año</label>
+        <input type="number" class="form-control {% if errors.año %}is-invalid{% endif %}" id="año" name="año" value="{{ libro.año or '' }}">
+        {% if errors.año %}
+        <div class="invalid-feedback">{{ errors.año }}</div>
+        {% endif %}
+    </div>
+    <div class="mb-3">
+        <label for="resumen" class="form-label">Resumen (opcional)</label>
+        <textarea class="form-control" id="resumen" name="resumen" rows="3">{{ libro.resumen or '' }}</textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Actualizar</button>
+    <a href="{{ url_for('books.list_books') }}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

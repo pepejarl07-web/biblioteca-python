@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Detalle del libro</h1>
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">{{ libro.titulo }}</h5>
+        <p class="card-text"><strong>Autor:</strong> {{ libro.autor }}</p>
+        <p class="card-text"><strong>Género:</strong> {{ libro.genero }}</p>
+        <p class="card-text"><strong>Año:</strong> {{ libro.año }}</p>
+        {% if libro.resumen %}
+        <p class="card-text"><strong>Resumen:</strong> {{ libro.resumen }}</p>
+        {% endif %}
+        <a href="{{ url_for('books.list_books') }}" class="btn btn-secondary">Volver</a>
+        <a href="{{ url_for('books.edit_book', id=libro._id) }}" class="btn btn-warning">Editar</a>
+    </div>
+</div>
+{% endblock %}
