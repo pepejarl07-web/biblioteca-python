@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-from app.database import books_collection
-from app.models import validate_book
+from .database import books_collection
+from .models import validate_book
 from bson import ObjectId
 import math
 
