@@ -18,6 +18,7 @@ client = MongoClient(MONGO_URI)
 db = client["coco"]
 
 books_collection = db["books"]
+users_collection = db["users"]
 
 print("Conexion a mongo establecida OK")
 
