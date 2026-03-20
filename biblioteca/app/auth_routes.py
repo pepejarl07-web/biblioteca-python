@@ -19,7 +19,7 @@ def register():
             errors["username"] = "El nombre de usuario es obligatorio."
         if not password:
             errors["password"] = "La contraseña es obligatoria"
-        elif len(password>6):
+        elif len(password) < 6:
             errors["password"] = "La contraseña tiene que tener al mnenos 6 caracteres"
 
         # verificar si el usuario ya existe
@@ -41,6 +41,7 @@ def register():
     return render_template("auth/register.html", errors={}, data={})
 
 #Ruta de inicio de sesion
+@auth_bp.route("/login",methods=["GET", "POST"])
 def login():
     if request.method == "POST":
         username = request.form.get("username")

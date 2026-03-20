@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for
+from utils import login_required, admin_required
 from .database import books_collection
 from .models import validate_book
 from bson import ObjectId
@@ -49,6 +50,7 @@ def detail_book(id):
 
 #Crear libro con get y post
 @bp.route("/books/create", methods=["GET","POST"])
+@login_required
 def create_book():
     if request.method == "POST":
         data = request.form.to_dict()
@@ -62,6 +64,7 @@ def create_book():
 
 #Editar libro (GET y POST)
 @bp.route("/books/edit/<id>", methods = ["GET", "POST"])
+@login_required
 def edit_book(id):
     libro = books_collection.find_one({"_id":ObjectId(id)})
     if not libro:
@@ -79,10 +82,14 @@ def edit_book(id):
 
 #Eliminar libro
 @bp.route("/books/delete/<id>", methods=["POST"])
+@admin_required
 def delete_book(id):
     books_collection.delete_one({"_id":ObjectId(id)})
     return redirect(url_for("books.list_books"))
 
+@bp.route("/")
+def index():
+    return render_template("index.html")
 
 
 
