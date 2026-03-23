@@ -1,9 +1,12 @@
-from flask import Blueprint, render_template, request, redirect, url_for
-from utils import login_required, admin_required
+from flask import Blueprint, render_template, request, redirect, url_for, make_response
+from .utils import login_required, admin_required
 from .database import books_collection
 from .models import validate_book
 from bson import ObjectId
+
 import math
+import csv
+import io
 
 bp = Blueprint('books',__name__)
 
@@ -91,6 +94,31 @@ def delete_book(id):
 def index():
     return render_template("index.html")
 
+@bp.route("/books/export/csv")
+@admin_required
+def export_csv():
+    libros = books_collection.find()
+    output = io.StringIO()
+    writer = csv.writer(output)
+    #cabecera
+    writer.writerow(["id", "titulo", "autor", "año", "genero", "resumen"])
 
+    for libro in libros:
+        writer.writerow([
+            str(libro.get("_id", "")),
+            libro.get("titulo", ""),
+            libro.get("autor",""),
+            libro.get("año", ""),
+            libro.get("genero", ""),
+            libro.get("resumen", ""),
+        ])
+
+    csv_data = output.getvalue()
+    output.close()
+
+    response = make_response(csv_data)
+    response.headers["Content-Disposition"] = "attachment; filename=libros.csv"
+    response.headers["Content-Type"] = "text/csv; charset=utf-8"
+    return response
 
 

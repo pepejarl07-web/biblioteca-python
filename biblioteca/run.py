@@ -10,7 +10,7 @@ def create_app():
     #configuracion jwt
     app.secret_key = "claveflash" # CLAVE PARA FLASH
     app.config["JWT_SECRET_KEY"] = "clavejwt" #CLAVE PARA JWT
-    app.config["JWT_TOKEN_LOCATION"] = ["cookie"]
+    app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
     app.config["JWT_COOKIE_CSRF_PROTECT"] = False
 
     JWTManager(app)

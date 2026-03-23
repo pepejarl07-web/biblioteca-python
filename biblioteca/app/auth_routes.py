@@ -33,7 +33,8 @@ def register():
         hashed_password = generate_password_hash(password)
         users_collection.insert_one({   # guarda el nuevo usuario en mongoDB
                                     "username":username,
-                                    "password":hashed_password #con la contraseña hasheada
+                                    "password":hashed_password, #con la contraseña hasheada
+                                    "role": request.form.get("role","user") # viene del select del formulario
                                     })
         flash("Usuario registrado correctamente. Ahora puedes iniciar sesion.", "success")
         return redirect(url_for("auth.login"))
@@ -53,7 +54,10 @@ def login():
         #verificar credenciales
         if user and check_password_hash(user["password"], password):
             #Crear token JWT con el id del user como identidad
-            access_token = create_access_token(identity=str(user["_id"]))
+            access_token = create_access_token(
+                                        identity=str(user["_id"]),
+                                        additional_claims={"role": user.get("role","user")})
+
             response = redirect(url_for("books.list_books"))
             set_access_cookies(response, access_token)          #guarda el token en una cookie!
             flash("inicio de sesion exitoso", "success")
